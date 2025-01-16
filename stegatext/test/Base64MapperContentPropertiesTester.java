@@ -94,9 +94,9 @@ public class Base64MapperContentPropertiesTester {
     private static Map<String, String> createDigitMap(List<String> digitList) {
         Objects.requireNonNull(digitList);
               
-        return DIGIT_LIST.stream()
-                .map(DIGIT_LIST::indexOf)
-                .collect(groupingBy(DIGIT_LIST::get, mapping(String::valueOf, reducing("", (a, b) -> b))));
+        return digitList.stream()
+                .map(digitList::indexOf)
+                .collect(groupingBy(digitList::get, mapping(String::valueOf, reducing("", (a, b) -> b))));
     }
 }
     
