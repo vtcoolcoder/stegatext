@@ -48,6 +48,11 @@ public class Base64MapperContentPropertiesTester {
             
     
     public static void main(String... args) {
+        printAllProperties();
+    }
+    
+    
+    private static void printAllProperties() {
         final var properties = PROPERTIES.getProperties();
         var methods = properties.getClass().getMethods();
         
