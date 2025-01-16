@@ -2,6 +2,7 @@ package stegatext.test;
 
 
 import static stegatext.properties.Base64MapperContentProperties.PROPERTIES;
+import static java.util.stream.Collectors.*;
 
 import java.util.Map;
 import java.util.List;
@@ -13,14 +14,12 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Function;
 
-import java.util.stream.Collectors;
-
 import java.lang.reflect.*;
 
 
 public class Base64MapperContentPropertiesTester {
 
-    private static final List<String> DIGITS_LIST = List.of(
+    private static final List<String> DIGIT_LIST = List.of(
             "zero", 
             "one", 
             "two", 
@@ -33,7 +32,7 @@ public class Base64MapperContentPropertiesTester {
             "nine"
     );
     
-    private static final Set<String> DIGITS_SET = Set.copyOf(DIGITS_LIST);   
+    private static final Set<String> DIGIT_SET = Set.copyOf(DIGIT_LIST);   
     private static final Set<String> SYMBOLS = Set.of("plus", "slash", "propertyEquals");  
     private static final Set<String> OBJECT_METHOD_NAMES = Set.of(
             "equals",
@@ -45,7 +44,7 @@ public class Base64MapperContentPropertiesTester {
             "wait"
     );
     
-    private static final Map<String, String> DIGITS_MAP = createDigitMap(DIGITS_LIST);
+    private static final Map<String, String> DIGIT_MAP = createDigitMap(DIGIT_LIST);
             
     
     public static void main(String... args) {
@@ -79,12 +78,12 @@ public class Base64MapperContentPropertiesTester {
                 && Character.isLetter(str.charAt(0)) 
                 && Character.isLetter(str.charAt(1))
                 && (Character.toUpperCase(str.charAt(0)) == str.charAt(1));
-                                    
+                                  
         Comparator<String> comparatorStr = Comparator.comparing(str -> SYMBOLS.contains(str) ? str : "");
         
-        Function<String, String> toIntStr = str -> DIGITS_MAP.getOrDefault(str, ""); 
+        Function<String, String> toIntStr = str -> DIGIT_MAP.getOrDefault(str, ""); 
               
-        comparatorStr = comparatorStr.thenComparing(str -> DIGITS_SET.contains(str) ? toIntStr.apply(str) : "");   
+        comparatorStr = comparatorStr.thenComparing(str -> DIGIT_SET.contains(str) ? toIntStr.apply(str) : "");   
         comparatorStr = comparatorStr.thenComparing(str -> isTwoLetters.test(str) ? str : "");   
         comparatorStr = comparatorStr.thenComparing(str -> isOneLetter.test(str) ? str : "");
             
@@ -94,9 +93,10 @@ public class Base64MapperContentPropertiesTester {
     
     private static Map<String, String> createDigitMap(List<String> digitList) {
         Objects.requireNonNull(digitList);
-        return digitList.stream()
-            .map(digit -> Map.entry(digit, String.valueOf(digitList.indexOf(digit))))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+              
+        return DIGIT_LIST.stream()
+                .map(DIGIT_LIST::indexOf)
+                .collect(groupingBy(DIGIT_LIST::get, mapping(String::valueOf, reducing("", (a, b) -> b))));
     }
 }
     
