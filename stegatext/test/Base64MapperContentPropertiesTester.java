@@ -3,6 +3,8 @@ package stegatext.test;
 
 import static stegatext.properties.Base64MapperContentProperties.PROPERTIES;
 import static java.util.stream.Collectors.*;
+import static java.util.Map.Entry;
+import static java.util.Map.entry;
 
 import java.util.Map;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.Objects;
 
 import java.util.function.Predicate;
 import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
 
 import java.lang.reflect.*;
 
@@ -83,16 +87,30 @@ public class Base64MapperContentPropertiesTester {
                 && Character.isLetter(str.charAt(0)) 
                 && Character.isLetter(str.charAt(1))
                 && (Character.toUpperCase(str.charAt(0)) == str.charAt(1));
-                                  
-        Comparator<String> comparatorStr = Comparator.comparing(str -> SYMBOLS.contains(str) ? str : "");
+                
+        BiFunction<Predicate<String>, String, String> 
+        toComparableStr = (predicate, str) -> predicate.test(str) ? str : "";
         
-        Function<String, String> toIntStr = str -> DIGIT_MAP.getOrDefault(str, ""); 
-              
-        comparatorStr = comparatorStr.thenComparing(str -> DIGIT_SET.contains(str) ? toIntStr.apply(str) : "");   
-        comparatorStr = comparatorStr.thenComparing(str -> isTwoLetters.test(str) ? str : "");   
-        comparatorStr = comparatorStr.thenComparing(str -> isOneLetter.test(str) ? str : "");
-            
-        return comparatorStr;
+        BiFunction<
+                Predicate<String>, 
+                Entry<String, UnaryOperator<String>>, 
+                String
+        > toMappedComparableStr = (predicate, entry) -> predicate.test(entry.getKey()) 
+                ? entry.getValue().apply(entry.getKey())
+                : "";
+        
+        Function<String, String> bySymbolsContains = str -> toComparableStr.apply(SYMBOLS::contains, str);   
+        Function<String, String> byTwoLetters = str -> toComparableStr.apply(isTwoLetters, str);
+        Function<String, String> byOneLetter = str -> toComparableStr.apply(isOneLetter, str);
+        
+        UnaryOperator<String> toIntStr = str -> DIGIT_MAP.getOrDefault(str, ""); 
+        Function<String, String> byDigitSetContains = str -> 
+                toMappedComparableStr.apply(DIGIT_SET::contains, entry(str, toIntStr));
+                                      
+        return Comparator.comparing(bySymbolsContains)
+                .thenComparing(byDigitSetContains)
+                .thenComparing(byTwoLetters)
+                .thenComparing(byOneLetter);
     }
     
     
