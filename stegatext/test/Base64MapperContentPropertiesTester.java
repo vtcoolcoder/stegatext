@@ -2,9 +2,11 @@ package stegatext.test;
 
 
 import static stegatext.properties.Base64MapperContentProperties.PROPERTIES;
+
 import static java.util.stream.Collectors.*;
 import static java.util.Map.Entry;
 import static java.util.Map.entry;
+
 
 import java.util.Map;
 import java.util.List;
