@@ -51,6 +51,15 @@ public class Base64MapperTester {
 
     public static void main(String... args) {
         printAllMappers();
+        
+        System.err.println(
+                STR."""
+                
+                
+                characterToStringMapperSize: \{MAPPER.characterToStringMapper().size()}
+                characterToStringMapperSize: \{MAPPER.characterToStringMapper().size()}
+                """
+        );   
     }
     
     
