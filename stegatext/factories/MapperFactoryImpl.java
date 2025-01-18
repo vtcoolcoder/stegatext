@@ -23,6 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class MapperFactoryImpl implements MapperFactory {
+    
+    private static final int FIRST_ELEM_IDX = 0;
+    private static final int SECOND_ELEM_IDX = 1;
+    
 
     private final Map<String, Character> strToCharPartMap; 
     private final Map<Character, String> charToStrPartMap;
@@ -98,15 +102,15 @@ public class MapperFactoryImpl implements MapperFactory {
     
     private Predicate<Method> getIsValidPredicate() {
         Predicate<Method> firstPart = method -> method.getName().length() == 1
-                && Character.isLetter(method.getName().charAt(0));
+                && Character.isLetter(method.getName().charAt(FIRST_ELEM_IDX));
                 
         Predicate<Method> secondFirstSubPart = method -> method.getName().length() == 2
-                && Character.isLetter(method.getName().charAt(0))
-                && Character.isLetter(method.getName().charAt(1));
+                && Character.isLetter(method.getName().charAt(FIRST_ELEM_IDX))
+                && Character.isLetter(method.getName().charAt(SECOND_ELEM_IDX));
                 
         Predicate<Method> secondSecondSubPart = method -> 
-                Character.toUpperCase(method.getName().charAt(0))      
-                        == method.getName().charAt(0);   
+                Character.toUpperCase(method.getName().charAt(FIRST_ELEM_IDX))      
+                        == method.getName().charAt(SECOND_ELEM_IDX);   
                 
         Predicate<Method> secondPart = secondFirstSubPart.and(secondSecondSubPart);
                      
@@ -116,8 +120,8 @@ public class MapperFactoryImpl implements MapperFactory {
     
     private Function<Method, Map.Entry<String, Character>> getToEntryMapper() {
         Function<String, Character> methodNameToChar = name -> switch (name.length()) {
-                case 1 -> name.charAt(0);
-                case 2 -> name.charAt(1);
+                case 1 -> name.charAt(FIRST_ELEM_IDX);
+                case 2 -> name.charAt(SECOND_ELEM_IDX);
                 default -> throw new IllegalArgumentException();
         };
                
