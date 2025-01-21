@@ -59,15 +59,18 @@ public class Obfuscator {
     private static void parseCLArgs(String... args) {     
         final var paramName = args[0]; 
         switch (paramName) {
-            case "--encode", "-e", "--decode", "-d" -> { 
-                    instanceObfuscatorIfNull();
-                    switch (paramName) {
-                        case "--encode", "-e" -> obfuscator.encode();
-                        case "--decode", "-d" -> obfuscator.decode();
-                    }
-            }
+            case "--encode", "-e", "--decode", "-d" -> parseCLArgsForObfuscatorInstance(paramName);         
             case "--help", "-h" -> help();
             default -> { reportWrongParamName(paramName); help(); }
+        }
+    }
+    
+    
+    private static void parseCLArgsForObfuscatorInstance(String paramName) {
+        instanceObfuscatorIfNull();
+        switch (paramName) {
+            case "--encode", "-e" -> obfuscator.encode();
+            case "--decode", "-d" -> obfuscator.decode();
         }
     }
     
