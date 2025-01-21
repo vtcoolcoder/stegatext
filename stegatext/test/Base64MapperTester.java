@@ -57,7 +57,7 @@ public class Base64MapperTester {
                 
                 
                 characterToStringMapperSize: \{MAPPER.characterToStringMapper().size()}
-                characterToStringMapperSize: \{MAPPER.characterToStringMapper().size()}
+                stringToCharacterMapperSize: \{MAPPER.stringToCharacterMapper().size()}
                 """
         );   
     }
