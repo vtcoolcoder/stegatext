@@ -21,6 +21,10 @@ public class Obfuscator {
     private static final Base64.Encoder ENCODER = Base64.getEncoder();
     private static final Base64.Decoder DECODER = Base64.getDecoder();
     private static final Scanner SCANNER = new Scanner(System.in);
+    private static final String PROGRAM_NAME_PREFIX = "java --enable-preview stegatext.Obfuscator";
+    
+    
+    private static Obfuscator obfuscator = null;
     
     
     private final Base64Mapper base64Mapper;
@@ -33,21 +37,37 @@ public class Obfuscator {
 
 
     public static void main(String... args) {
-        var context = new AnnotationConfigApplicationContext(MapperConfig.class);
-        var obfuscator = context.getBean(Obfuscator.class);
-                
-        obfuscator.obfuscating(args);
+        if (isCLArgsExist(args)) {
+            parseCLArgs(args);
+        } else {
+            help();
+        }        
     }
     
     
-    private void obfuscating(String... args) {
-        if (args.length > 0) {
-            switch (args[0]) {
-                case "--encode" -> encode();
-                case "--decode" -> decode();
+    private static boolean isCLArgsExist(String... args) { return args.length > 0; }
+    
+    
+    private static void instanceObfuscatorIfNull() {
+        if (obfuscator == null) {
+            var context = new AnnotationConfigApplicationContext(MapperConfig.class);
+            obfuscator = context.getBean(Obfuscator.class);
+        }   
+    }
+    
+    
+    private static void parseCLArgs(String... args) {     
+        final var paramName = args[0]; 
+        switch (paramName) {
+            case "--encode", "-e", "--decode", "-d" -> { 
+                    instanceObfuscatorIfNull();
+                    switch (paramName) {
+                        case "--encode", "-e" -> obfuscator.encode();
+                        case "--decode", "-d" -> obfuscator.decode();
+                    }
             }
-        } else {
-            help();
+            case "--help", "-h" -> help();
+            default -> { reportWrongParamName(paramName); help(); }
         }
     }
     
@@ -90,7 +110,26 @@ public class Obfuscator {
     }
     
     
-    private void help() {
-        System.err.println("Справка:");
+    private static void help() {
+        System.err.println(STR."""
+                \t\t\t\t\t\t\
+                ИСПОЛЬЗОВАНИЕ
+                
+                Для обфускации:
+                    \{PROGRAM_NAME_PREFIX} {--encode|-e} < source-txt-file > obfs-txt-file
+                    
+                Для деобфускации:
+                    \{PROGRAM_NAME_PREFIX} {--decode|-d} < obfs-txt-file > decoded-source-txt-file
+                    
+                Вызов справки:
+                    \{PROGRAM_NAME_PREFIX} {--help|-h}
+                """
+        );
+    }
+    
+    
+    private static void reportWrongParamName(String paramName) {
+        System.err.println(STR."Неизвестное имя параметра: \{paramName} !");
+        System.err.println();
     }
 }
