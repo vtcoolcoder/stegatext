@@ -101,17 +101,20 @@ public class MapperFactoryImpl implements MapperFactory {
     
     
     private Predicate<Method> getIsValidPredicate() {
-        Predicate<Method> firstPart = method -> method.getName().length() == 1
-                && Character.isLetter(method.getName().charAt(FIRST_ELEM_IDX));
-                
-        Predicate<Method> secondFirstSubPart = method -> method.getName().length() == 2
-                && Character.isLetter(method.getName().charAt(FIRST_ELEM_IDX))
-                && Character.isLetter(method.getName().charAt(SECOND_ELEM_IDX));
-                
-        Predicate<Method> secondSecondSubPart = method -> 
-                Character.toUpperCase(method.getName().charAt(FIRST_ELEM_IDX))      
-                        == method.getName().charAt(SECOND_ELEM_IDX);   
-                
+        Predicate<String> firstPartStr = methodName -> 1 == methodName.length()
+                && Character.isLetter(methodName.charAt(FIRST_ELEM_IDX));
+        Predicate<Method> firstPart = method -> firstPartStr.test(method.getName());
+         
+        Predicate<String> secondFirstSubPartStr = methodName -> 2 == methodName.length()  
+                && Character.isLetter(methodName.charAt(FIRST_ELEM_IDX))    
+                && Character.isLetter(methodName.charAt(SECOND_ELEM_IDX));                 
+        Predicate<Method> secondFirstSubPart = method -> secondFirstSubPartStr.test(method.getName());
+        
+        Predicate<String> secondSecondSubPartStr = methodName -> 
+                Character.toUpperCase(methodName.charAt(FIRST_ELEM_IDX))    
+                        == methodName.charAt(SECOND_ELEM_IDX);     
+        Predicate<Method> secondSecondSubPart = method -> secondSecondSubPartStr.test(method.getName());
+                              
         Predicate<Method> secondPart = secondFirstSubPart.and(secondSecondSubPart);
                      
         return firstPart.or(secondPart);
