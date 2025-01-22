@@ -1,4 +1,4 @@
-package stegatext.factories;
+package stegatext.interfaces.factories;
 
 
 import java.util.Map;
