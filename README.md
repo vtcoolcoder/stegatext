@@ -5,9 +5,9 @@
 
 Если установлена 21 версия, в команде запуска после слова java добавить ключ --enable-preview.
 
-Запись вида {--<longParam>|-<shortParam>} означает: 
+Запись вида {--&lt;longParam&gt;|-&lt;shortParam&gt;} означает: 
 
-требуется обязательный параметр --<longParam>, либо -<shortParam>.
+требуется обязательный параметр --&lt;longParam&gt;, либо -&lt;shortParam&gt;.
 
                                             Примеры использования
 
