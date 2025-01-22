@@ -5,9 +5,11 @@
 
 Если установлена 21 версия, в команде запуска после слова java добавить ключ --enable-preview.
 
-Запись вида {--&lt;longParam&gt;|-&lt;shortParam&gt;} означает: 
+Запись вида 
+    {--<longParam>|-<shortParam>} означает: 
 
-требуется обязательный параметр --&lt;longParam&gt;, либо -&lt;shortParam&gt;.
+требуется обязательный параметр 
+    --<longParam>, либо -<shortParam>.
 
                                             Примеры использования
 
@@ -26,7 +28,6 @@
 Дешифрование:
 
     java stegatext.StegaTextRunner {--decrypt|-D} < encrypted-txt-file > decrypted-source-txt-file
-
 Справка:
 
     java stegatext.StegaTextRunner {--help|-h}
