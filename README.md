@@ -7,11 +7,11 @@
 
 Запись вида
 
-{--<longParam>|-<shortParam>} означает: 
+    {--<longParam>|-<shortParam>} означает: 
 
 требуется обязательный параметр 
 
---<longParam>, либо -<shortParam>.
+    --<longParam>, либо -<shortParam>.
 
                                             Примеры использования
 
