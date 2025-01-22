@@ -4,6 +4,7 @@ package stegatext.factories;
 import static stegatext.properties.Base64MapperContentProperties.Properties;
 import static java.util.Map.entry;
 
+import stegatext.interfaces.factories.MapperFactory;
 
 import java.util.Objects;
 import java.util.Map;
