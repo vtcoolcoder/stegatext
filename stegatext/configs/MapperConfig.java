@@ -1,7 +1,7 @@
 package stegatext.configs;
 
 
-import stegatext.factories.MapperFactory;
+import stegatext.interfaces.factories.MapperFactory;
 
 import java.util.Map;
 
