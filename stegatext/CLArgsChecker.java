@@ -33,7 +33,7 @@ public class CLArgsChecker {
     @Autowired
     public CLArgsChecker(String... args) {
         this.args = args;
-        paramName = this.args[FIRST_ARG_IDX];
+        paramName = isCLArgsExist() ? this.args[FIRST_ARG_IDX] : "";
     }
     
     
