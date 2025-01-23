@@ -65,8 +65,8 @@ public class StegaTextRunner {
     
     
     private void doSwitchedAction() {
-        final Consumer wrongParamConsumer = paramName -> {
-            messageHelper.reportWrongParamName("" + paramName); 
+        final Consumer<String> wrongParamConsumer = paramName -> {
+            messageHelper.reportWrongParamName(paramName); 
             messageHelper.help(); 
         };
         
